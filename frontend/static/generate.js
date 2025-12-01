@@ -23,29 +23,27 @@ async function validateToken() {
     }
 }
 
-// Обновите функцию checkAuthStatus
+
 async function checkAuthStatus() {
     const token = localStorage.getItem('access_token');
-    const navButtons = document.querySelector('.flex.items-center.gap-2');
+    const authButtons = document.getElementById('auth-buttons');
 
-    if (!navButtons) return;
+    if (!authButtons) return;
 
     if (token) {
         try {
-            const isValid = await validateToken();
-            if (!isValid) {
-                logout();
-                return;
-            }
-
             const userEmail = localStorage.getItem('user_email');
             const userName = localStorage.getItem('user_name');
 
-            navButtons.innerHTML = `
-                <span class="text-sm text-graphite-gray hidden md:block">${userEmail || 'Пользователь'}</span>
-                <button onclick="logout()" class="flex h-10 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-gray-100 px-4 text-sm font-bold leading-normal tracking-wide text-cobblestone-blue transition-transform hover:scale-105">
-                    <span class="truncate">Выйти</span>
-                </button>
+            authButtons.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <span class="text-sm text-graphite-gray truncate max-w-[120px] md:max-w-[180px]" title="${userEmail || 'Пользователь'}">
+                        ${userEmail || 'Пользователь'}
+                    </span>
+                    <button onclick="logout()" class="flex h-10 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-gray-100 px-4 text-sm font-bold leading-normal tracking-wide text-cobblestone-blue transition-transform hover:scale-105">
+                        <span class="truncate">Выйти</span>
+                    </button>
+                </div>
             `;
         } catch (error) {
             console.error('Auth check failed:', error);
